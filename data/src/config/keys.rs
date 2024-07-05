@@ -32,6 +32,8 @@ pub struct Keyboard {
     pub command_bar: KeyBind,
     #[serde(default = "KeyBind::reload_configuration")]
     pub reload_configuration: KeyBind,
+    #[serde(default = "KeyBind::toggle_configuration_buffer")]
+    pub toggle_configuration_buffer: KeyBind,
 }
 
 impl Default for Keyboard {
@@ -51,6 +53,7 @@ impl Default for Keyboard {
             toggle_sidebar: KeyBind::toggle_sidebar(),
             command_bar: KeyBind::command_bar(),
             reload_configuration: KeyBind::reload_configuration(),
+            toggle_configuration_buffer: KeyBind::toggle_configuration_buffer(),
         }
     }
 }
@@ -74,6 +77,7 @@ impl Keyboard {
             shortcut(self.toggle_sidebar.clone(), ToggleSidebar),
             shortcut(self.command_bar.clone(), CommandBar),
             shortcut(self.reload_configuration.clone(), ReloadConfiguration),
+            shortcut(self.toggle_configuration_buffer.clone(), ToggleConfigurationBuffer),
         ]
     }
 }

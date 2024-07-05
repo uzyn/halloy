@@ -37,6 +37,7 @@ pub enum Command {
     ToggleSidebar,
     CommandBar,
     ReloadConfiguration,
+    ToggleConfigurationBuffer,
 }
 
 macro_rules! default {
@@ -116,6 +117,7 @@ impl KeyBind {
     default!(toggle_sidebar, "b", COMMAND | ALT);
     default!(command_bar, "k", COMMAND);
     default!(reload_configuration, "r", COMMAND);
+    default!(toggle_configuration_buffer, ",", COMMAND);
 
     pub fn is_pressed(
         &self,

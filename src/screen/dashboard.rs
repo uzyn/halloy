@@ -542,6 +542,10 @@ impl Dashboard {
                     ReloadConfiguration => {
                         return (Task::none(), Some(Event::ReloadConfiguration))
                     }
+                    ToggleConfigurationBuffer => {
+                        println!("ToggleConfigurationBuffer");
+                        return (Task::none(), Some(Event::ReloadConfiguration)) // temporary
+                    }
                 }
             }
             Message::FileTransfer(update) => {
