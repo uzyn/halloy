@@ -30,6 +30,7 @@ pub enum Event {
     Leave(Buffer),
     ToggleFileTransfers,
     ToggleCommandBar,
+    ToggleConfiguration,
 }
 
 #[derive(Clone)]

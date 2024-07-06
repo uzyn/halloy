@@ -125,6 +125,7 @@ pub enum Buffer {
     Close,
     Replace(data::Buffer),
     ToggleFileTransfers,
+    ToggleConfiguration,
 }
 
 #[derive(Debug, Clone)]

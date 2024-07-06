@@ -25,6 +25,7 @@ pub enum Buffer {
     Server(Server),
     Query(Query),
     FileTransfers(FileTransfers),
+    Configuration(Config),
 }
 
 #[derive(Debug, Clone)]
@@ -52,6 +53,7 @@ impl Buffer {
             Buffer::Server(state) => Some(state.buffer()),
             Buffer::Query(state) => Some(state.buffer()),
             Buffer::FileTransfers(_) => None,
+            Buffer::Configuration(_) => None,
         }
     }
 

@@ -301,6 +301,10 @@ impl Dashboard {
                             None,
                         );
                     }
+                    //Toggle Configuration Buffer
+                    sidebar::Event::ToggleConfiguration => {
+                        return (self.toggle_configuration(config), None);
+                    }
                 }
             }
             Message::SelectedText(contents) => {
@@ -751,6 +755,45 @@ impl Dashboard {
         // If file transfers already is open, we close it.
         for (id, pane) in panes.iter() {
             if let Buffer::FileTransfers(_) = pane.buffer {
+                return self.close_pane(*id);
+            }
+        }
+
+        // If we only have one pane, and its empty, we replace it.
+        if self.panes.len() == 1 {
+            for (id, pane) in panes.iter() {
+                if let Buffer::Empty = &pane.buffer {
+                    self.panes.panes.entry(*id).and_modify(|p| {
+                        *p = Pane::new(Buffer::FileTransfers(FileTransfers::new()), config)
+                    });
+                    self.last_changed = Some(Instant::now());
+
+                    return self.focus_pane(*id);
+                }
+            }
+        }
+
+        let mut commands = vec![];
+        let _ = self.new_pane(pane_grid::Axis::Vertical, config);
+
+        if let Some(pane) = self.focus.take() {
+            if let Some(state) = self.panes.get_mut(pane) {
+                state.buffer = Buffer::FileTransfers(FileTransfers::new());
+                self.last_changed = Some(Instant::now());
+
+                commands.extend(vec![self.reset_pane(pane), self.focus_pane(pane)]);
+            }
+        }
+
+        Task::batch(commands)
+    }
+
+    fn toggle_configuration(&mut self, config: &Config) -> Task<Message> {
+        let panes = self.panes.clone();
+
+        // If configuration already is open, we close it.
+        for (id, pane) in panes.iter() {
+            if let Buffer::Configuration(config) = pane.buffer {
                 return self.close_pane(*id);
             }
         }
